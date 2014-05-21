@@ -67,6 +67,7 @@ angular.module('ui.bootstrap.carousel', ['ui.bootstrap.transition'])
       angular.extend(next, {direction: '', active: true, leaving: false, entering: false});
       angular.extend(current||{}, {direction: '', active: false, leaving: false, entering: false});
       $scope.$currentTransition = null;
+      if ($scope.slid) { $scope.slid(nextIndex); }
     }
   };
   $scope.$on('$destroy', function () {
@@ -191,6 +192,7 @@ angular.module('ui.bootstrap.carousel', ['ui.bootstrap.transition'])
  * @param {number=} interval The time, in milliseconds, that it will take the carousel to go to the next slide.
  * @param {boolean=} noTransition Whether to disable transitions on the carousel.
  * @param {boolean=} noPause Whether to disable pausing on the carousel (by default, the carousel interval pauses on hover).
+ * @param {function=} slid If provided call this function with slide index argument every time when slide transition is done.
  * @param {boolean=} noWrap Whether to disable carousel slides wrapping around.
  *
  * @example
@@ -230,6 +232,7 @@ angular.module('ui.bootstrap.carousel', ['ui.bootstrap.transition'])
     scope: {
       interval: '=',
       noTransition: '=',
+      slid: '=',
       noPause: '=',
       noWrap: '='
     }
