@@ -142,6 +142,12 @@ angular.module('ui.bootstrap.carousel', ['ui.bootstrap.transition'])
       resetTimer();
     }
   };
+  $scope.canSlideLeft = function() {
+    return slides.length > 1 && (!$scope.noWrap || currentIndex > 0);
+  };
+  $scope.canSlideRight = function() {
+    return slides.length > 1 && (!$scope.noWrap || currentIndex != slides.length - 1);
+  };
 
   $scope.canSlideLeft = function() {
     return !$scope.noWrap || slides.length > 1 && (currentIndex > 0);
