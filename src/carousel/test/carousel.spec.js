@@ -93,6 +93,32 @@ describe('carousel', function() {
       expect(navPrev.length).toBe(0);
     });
 
+    function noWrapTest(isLast) {
+      scope.slides=[{active:!isLast,content:'one'},{active:isLast,content:'two'}];
+      scope.$apply();
+      elm = $compile(
+        '<carousel interval="interval" no-transition="true" no-wrap="true">' +
+          '<slide ng-repeat="slide in slides" active="slide.active">' +
+          '{{slide.content}}' +
+          '</slide>' +
+          '</carousel>'
+      )(scope);
+      scope.$apply();
+      var navNext = elm.find('a.right.ng-hide');
+      expect(navNext.length).toBe(isLast ? 1 : 0);
+
+      var navPrev = elm.find('a.left.ng-hide');
+      expect(navPrev.length).toBe(isLast ? 0 : 1);
+    }
+
+    it('should hide left navigation and show right navigation when it is first slide and noWrap is true', function() {
+      noWrapTest(false);
+    });
+
+    it('should hide right navigation and show left navigation when it is last slide and noWrap is true', function() {
+      noWrapTest(true);
+    });
+
     it('should show navigation when there are 3 slides', function () {
       var indicators = elm.find('ol.carousel-indicators > li');
       expect(indicators.length).not.toBe(0);

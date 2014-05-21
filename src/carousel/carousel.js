@@ -120,7 +120,7 @@ angular.module('ui.bootstrap.carousel', ['ui.bootstrap.transition'])
 
   function timerFn() {
     if (isPlaying) {
-      $scope.next();
+      if ($scope.canSlideRight()) { $scope.next(); }
       restartTimer();
     } else {
       $scope.pause();
@@ -138,6 +138,12 @@ angular.module('ui.bootstrap.carousel', ['ui.bootstrap.transition'])
       isPlaying = false;
       resetTimer();
     }
+  };
+  $scope.canSlideLeft = function() {
+    return slides.length > 1 && (!$scope.noWrap || currentIndex > 0);
+  };
+  $scope.canSlideRight = function() {
+    return slides.length > 1 && (!$scope.noWrap || currentIndex != slides.length - 1);
   };
 
   self.addSlide = function(slide, element) {
@@ -182,6 +188,7 @@ angular.module('ui.bootstrap.carousel', ['ui.bootstrap.transition'])
  * @param {number=} interval The time, in milliseconds, that it will take the carousel to go to the next slide.
  * @param {boolean=} noTransition Whether to disable transitions on the carousel.
  * @param {boolean=} noPause Whether to disable pausing on the carousel (by default, the carousel interval pauses on hover).
+ * @param {boolean=} noWrap Whether to disable carousel slides wrapping around.
  *
  * @example
 <example module="ui.bootstrap">
@@ -220,7 +227,8 @@ angular.module('ui.bootstrap.carousel', ['ui.bootstrap.transition'])
     scope: {
       interval: '=',
       noTransition: '=',
-      noPause: '='
+      noPause: '=',
+      noWrap: '='
     }
   };
 }])
