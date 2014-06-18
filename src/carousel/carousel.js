@@ -79,6 +79,7 @@ angular.module('ui.bootstrap.carousel', ['ui.bootstrap.transition'])
   };
 
   $scope.next = function() {
+    if (!$scope.canSlideRight()) {return;}
     var newIndex = (currentIndex + 1) % slides.length;
 
     //Prevent this user-triggered transition from occurring if there is already one in progress
@@ -88,6 +89,7 @@ angular.module('ui.bootstrap.carousel', ['ui.bootstrap.transition'])
   };
 
   $scope.prev = function() {
+    if (!$scope.canSlideLeft()) {return;}
     var newIndex = currentIndex - 1 < 0 ? slides.length - 1 : currentIndex - 1;
 
     //Prevent this user-triggered transition from occurring if there is already one in progress
@@ -139,11 +141,12 @@ angular.module('ui.bootstrap.carousel', ['ui.bootstrap.transition'])
       resetTimer();
     }
   };
+
   $scope.canSlideLeft = function() {
-    return slides.length > 1 && (!$scope.noWrap || currentIndex > 0);
+    return !$scope.noWrap || slides.length > 1 && (currentIndex > 0);
   };
   $scope.canSlideRight = function() {
-    return slides.length > 1 && (!$scope.noWrap || currentIndex != slides.length - 1);
+    return !$scope.noWrap || slides.length > 1 && (currentIndex != slides.length - 1);
   };
 
   self.addSlide = function(slide, element) {
